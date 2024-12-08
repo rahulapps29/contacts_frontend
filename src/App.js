@@ -23,7 +23,7 @@ const App = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/contacts");
+      const response = await axios.get("http://contactsbackend.rahulluthra.in/api/contacts");
       setContacts(response.data);
     } catch (error) {
       console.error("Error fetching contacts:", error.message);
@@ -48,7 +48,7 @@ const App = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/contacts",
+        "http://contactsbackend.rahulluthra.in/api/contacts",
         data
       );
       setContacts([...contacts, response.data.contact]);
@@ -72,7 +72,7 @@ const App = () => {
     if (!window.confirm("Are you sure you want to delete this contact?"))
       return;
     try {
-      await axios.delete(`http://localhost:5000/api/contacts/${id}`);
+      await axios.delete(`http://contactsbackend.rahulluthra.in/api/contacts/${id}`);
       setContacts(contacts.filter((contact) => contact._id !== id));
       alert("Contact deleted successfully!");
     } catch (error) {
@@ -100,7 +100,7 @@ const App = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/contacts/${editingContact._id}`,
+        `http://contactsbackend.rahulluthra.in/api/contacts/${editingContact._id}`,
         data
       );
       setContacts(
@@ -220,7 +220,7 @@ const App = () => {
                 >
                   <div className="d-flex align-items-center">
                     <img
-                      src={`http://localhost:5000/${contact.photo}`}
+                      src={`http://contactsbackend.rahulluthra.in/${contact.photo}`}
                       alt="Contact"
                       className="rounded-circle me-3"
                       style={{
