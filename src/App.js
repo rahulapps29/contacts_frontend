@@ -44,7 +44,9 @@ const App = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await axios.get("http://contactsbackend.rahulluthra.in/api/contacts");
+      const response = await axios.get(
+        "http://contactsbackend.rahulluthra.in/api/contacts"
+      );
       setContacts(response.data);
     } catch (error) {
       console.error("Error fetching contacts:", error.message);
@@ -65,6 +67,11 @@ const App = () => {
     const data = new FormData();
     for (let key in newContact) {
       data.append(key, newContact[key]);
+    }
+
+    // Log the form data
+    for (let pair of data.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
     }
 
     try {
@@ -92,7 +99,9 @@ const App = () => {
     if (!window.confirm("Are you sure you want to delete this contact?"))
       return;
     try {
-      await axios.delete(`http://contactsbackend.rahulluthra.in/api/contacts/${id}`);
+      await axios.delete(
+        `http://contactsbackend.rahulluthra.in/api/contacts/${id}`
+      );
       setContacts(contacts.filter((contact) => contact._id !== id));
       alert("Contact deleted successfully!");
     } catch (error) {
