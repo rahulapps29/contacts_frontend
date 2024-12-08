@@ -1,7 +1,7 @@
 const config = {
   API_BASE_URL:
     process.env.NODE_ENV === "production"
-      ? "https://your-production-url.com"
+      ? "https://contactsbackemd.rahulluthra.in"
       : "http://localhost:5000",
 };
 
