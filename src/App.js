@@ -76,7 +76,6 @@ const App = () => {
 
     try {
       const response = await axios.post(
-<<<<<<< HEAD
         "http://contactsbackend.rahulluthra.in/api/contacts",
         data,
         {
@@ -84,10 +83,6 @@ const App = () => {
             "Content-Type": "multipart/form-data",
           },
         }
-=======
-        "https://contactsbackend.rahulluthra.in/api/contacts",
-        data
->>>>>>> 8da2a0ff8543e22aea9de60f3efd2e7c72331f1c
       );
       setContacts([...contacts, response.data.contact]);
       setNewContact({
