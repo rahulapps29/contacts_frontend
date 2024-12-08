@@ -20,6 +20,28 @@ const App = () => {
     fetchContacts();
   }, []);
 
+  // Automatically fetch user's coordinates
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          setNewContact((prevContact) => ({
+            ...prevContact,
+            coordinates: `${latitude},${longitude}`,
+          }));
+        },
+        (error) => {
+          console.error("Error fetching location:", error);
+          alert("Unable to fetch location. Please enable location services.");
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
   const fetchContacts = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/contacts");
@@ -178,17 +200,14 @@ const App = () => {
             />
           </div>
           <div className="mb-3">
-            <label className="form-label">
-              Coordinates (latitude,longitude)
-            </label>
+            <label className="form-label">Coordinates (Auto-fetched)</label>
             <input
               type="text"
               name="coordinates"
               className="form-control"
-              placeholder="e.g., 37.7749,-122.4194"
+              placeholder="Coordinates will be fetched automatically"
               value={newContact.coordinates}
-              onChange={handleInputChange}
-              required
+              readOnly
             />
           </div>
           <div className="mb-3">
