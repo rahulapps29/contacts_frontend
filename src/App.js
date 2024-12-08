@@ -15,12 +15,10 @@ const App = () => {
   });
   const [editingContact, setEditingContact] = useState(null);
 
-  // Fetch all contacts on component mount
   useEffect(() => {
     fetchContacts();
   }, []);
 
-  // Automatically fetch user's coordinates
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -33,7 +31,7 @@ const App = () => {
           }));
         },
         (error) => {
-          console.error("Error fetching location:", error);
+          console.error("Error fetching location:", error.message);
           alert("Unable to fetch location. Please enable location services.");
         }
       );
@@ -45,7 +43,7 @@ const App = () => {
   const fetchContacts = async () => {
     try {
       const response = await axios.get(
-        "https://contactsbackend.rahulluthra.in/api/contacts"
+        "http://contactsbackend.rahulluthra.in/api/contacts"
       );
       setContacts(response.data);
     } catch (error) {
@@ -62,16 +60,15 @@ const App = () => {
     setNewContact({ ...newContact, photo: e.target.files[0] });
   };
 
+  const handleFileEditChange = (e) => {
+    setEditingContact({ ...editingContact, photo: e.target.files[0] });
+  };
+
   const handleCreate = async (e) => {
     e.preventDefault();
     const data = new FormData();
     for (let key in newContact) {
       data.append(key, newContact[key]);
-    }
-
-    // Log the form data
-    for (let pair of data.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
     }
 
     try {
@@ -95,10 +92,7 @@ const App = () => {
       });
       alert("Contact created successfully!");
     } catch (error) {
-      console.error(
-        "Error creating contact:",
-        error.response?.data || error.message
-      );
+      console.error("Error creating contact:", error.message);
       alert("Failed to create contact.");
     }
   };
@@ -108,7 +102,7 @@ const App = () => {
       return;
     try {
       await axios.delete(
-        `https://contactsbackend.rahulluthra.in/api/contacts/${id}`
+        `http://contactsbackend.rahulluthra.in/api/contacts/${id}`
       );
       setContacts(contacts.filter((contact) => contact._id !== id));
       alert("Contact deleted successfully!");
@@ -122,23 +116,25 @@ const App = () => {
     setEditingContact(contact);
   };
 
-  const handleFileEditChange = (e) => {
-    setEditingContact({ ...editingContact, photo: e.target.files[0] });
-  };
-
   const handleUpdate = async (e) => {
     e.preventDefault();
     const data = new FormData();
+
     for (let key in editingContact) {
-      if (key !== "photo" || editingContact[key] instanceof File) {
+      if (key !== "photo" || editingContact.photo instanceof File) {
         data.append(key, editingContact[key]);
       }
     }
 
     try {
       const response = await axios.put(
-        `https://contactsbackend.rahulluthra.in/api/contacts/${editingContact._id}`,
-        data
+        `http://contactsbackend.rahulluthra.in/api/contacts/${editingContact._id}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       setContacts(
         contacts.map((contact) =>
@@ -269,7 +265,7 @@ const App = () => {
                   <div className="d-flex align-items-center">
                     {contact.photo && (
                       <img
-                        src={`https://contactsbackend.rahulluthra.in/${contact.photo}`}
+                        src={`http://contactsbackend.rahulluthra.in/${contact.photo}`}
                         alt="Contact"
                         className="rounded-circle me-3"
                         style={{
@@ -372,9 +368,7 @@ const App = () => {
               />
             </div>
             <div className="mb-3">
-              <label className="form-label">
-                Coordinates (latitude,longitude)
-              </label>
+              <label className="form-label">Coordinates</label>
               <input
                 type="text"
                 className="form-control"
@@ -388,10 +382,22 @@ const App = () => {
               />
             </div>
             <div className="mb-3">
-              <label className="form-label">Photo</label>
+              <label className="form-label">Current Photo</label>
+              {editingContact.photo && (
+                <img
+                  src={`http://contactsbackend.rahulluthra.in/${editingContact.photo}`}
+                  alt="Current Photo"
+                  className="rounded mb-3"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+              <label className="form-label">Change Photo</label>
               <input
                 type="file"
-                name="photo"
                 className="form-control"
                 onChange={handleFileEditChange}
               />
