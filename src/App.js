@@ -10,8 +10,7 @@ const App = () => {
     phone: "",
     email: "",
     address: "",
-    latitude: "",
-    longitude: "",
+    coordinates: "",
     photo: null,
   });
   const [editingContact, setEditingContact] = useState(null);
@@ -57,8 +56,7 @@ const App = () => {
         phone: "",
         email: "",
         address: "",
-        latitude: "",
-        longitude: "",
+        coordinates: "",
         photo: null,
       });
       alert("Contact created successfully!");
@@ -180,6 +178,20 @@ const App = () => {
             />
           </div>
           <div className="mb-3">
+            <label className="form-label">
+              Coordinates (latitude,longitude)
+            </label>
+            <input
+              type="text"
+              name="coordinates"
+              className="form-control"
+              placeholder="e.g., 37.7749,-122.4194"
+              value={newContact.coordinates}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
             <label className="form-label">Photo</label>
             <input
               type="file"
@@ -219,16 +231,18 @@ const App = () => {
                   className="list-group-item d-flex justify-content-between align-items-center"
                 >
                   <div className="d-flex align-items-center">
-                    <img
-                      src={`http://localhost:5000/${contact.photo}`}
-                      alt="Contact"
-                      className="rounded-circle me-3"
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        objectFit: "cover",
-                      }}
-                    />
+                    {contact.photo && (
+                      <img
+                        src={`http://localhost:5000/${contact.photo}`}
+                        alt="Contact"
+                        className="rounded-circle me-3"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    )}
                     <div>
                       <strong>{contact.name}</strong>
                       <br />
@@ -237,6 +251,8 @@ const App = () => {
                       Email: {contact.email}
                       <br />
                       Address: {contact.address}
+                      <br />
+                      Coordinates: {contact.coordinates}
                       <br />
                     </div>
                   </div>
@@ -315,6 +331,22 @@ const App = () => {
                   setEditingContact({
                     ...editingContact,
                     address: e.target.value,
+                  })
+                }
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">
+                Coordinates (latitude,longitude)
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                value={editingContact.coordinates}
+                onChange={(e) =>
+                  setEditingContact({
+                    ...editingContact,
+                    coordinates: e.target.value,
                   })
                 }
               />
