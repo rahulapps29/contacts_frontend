@@ -77,7 +77,12 @@ const App = () => {
     try {
       const response = await axios.post(
         "http://contactsbackend.rahulluthra.in/api/contacts",
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       setContacts([...contacts, response.data.contact]);
       setNewContact({
@@ -90,7 +95,10 @@ const App = () => {
       });
       alert("Contact created successfully!");
     } catch (error) {
-      console.error("Error creating contact:", error.message);
+      console.error(
+        "Error creating contact:",
+        error.response?.data || error.message
+      );
       alert("Failed to create contact.");
     }
   };
