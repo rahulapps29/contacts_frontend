@@ -45,7 +45,7 @@ const App = () => {
   const fetchContacts = async () => {
     try {
       const response = await axios.get(
-        "http://contactsbackend.rahulluthra.in/api/contacts"
+        "https://contactsbackend.rahulluthra.in/api/contacts"
       );
       setContacts(response.data);
     } catch (error) {
@@ -76,7 +76,7 @@ const App = () => {
 
     try {
       const response = await axios.post(
-        "http://contactsbackend.rahulluthra.in/api/contacts",
+        "https://contactsbackend.rahulluthra.in/api/contacts",
         data
       );
       setContacts([...contacts, response.data.contact]);
@@ -100,7 +100,7 @@ const App = () => {
       return;
     try {
       await axios.delete(
-        `http://contactsbackend.rahulluthra.in/api/contacts/${id}`
+        `https://contactsbackend.rahulluthra.in/api/contacts/${id}`
       );
       setContacts(contacts.filter((contact) => contact._id !== id));
       alert("Contact deleted successfully!");
@@ -129,7 +129,7 @@ const App = () => {
 
     try {
       const response = await axios.put(
-        `http://contactsbackend.rahulluthra.in/api/contacts/${editingContact._id}`,
+        `https://contactsbackend.rahulluthra.in/api/contacts/${editingContact._id}`,
         data
       );
       setContacts(
@@ -261,7 +261,7 @@ const App = () => {
                   <div className="d-flex align-items-center">
                     {contact.photo && (
                       <img
-                        src={`http://contactsbackend.rahulluthra.in/${contact.photo}`}
+                        src={`https://contactsbackend.rahulluthra.in/${contact.photo}`}
                         alt="Contact"
                         className="rounded-circle me-3"
                         style={{
